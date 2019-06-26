@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AppDebts</string>
+    <string name="sucess_connection">Conexão realizada com sucesso.</string>
 </resources>
