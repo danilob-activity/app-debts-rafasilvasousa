@@ -1,7 +1,7 @@
 package com.example.danilo.appdebts.database;
 
 /**
- * Created by aluno on 26/06/19.
+ * Created by Rafael Sousa on 26/06/19.
  */
 
 public class ScriptDLL {
@@ -27,5 +27,14 @@ public class ScriptDLL {
         sql.append(");");
         return sql.toString();
 
+    }
+
+    public static String getCategories(){
+        return "SELECT * from categoria;";
+    }
+
+
+    public static String getCategory(){
+        return "SELECT * from categoria where id=?;";
     }
 }
