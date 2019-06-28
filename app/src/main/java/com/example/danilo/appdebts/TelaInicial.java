@@ -77,6 +77,12 @@ public class TelaInicial extends AppCompatActivity {
         deb5.setExpire_date("15/06/2019");
         deb5.setPayment_date("");
 
+        long debid1 = debtDAO.insert(deb1);
+        long debid2 = debtDAO.insert(deb2);
+        long debid3 = debtDAO.insert(deb3);
+        long debid4 = debtDAO.insert(deb4);
+        long debid5 = debtDAO.insert(deb5);
+
 
 
         mConnection.close();

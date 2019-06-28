@@ -21,7 +21,7 @@ public class DebtsDAO {
         mConnection = connection;
     }
 
-    public void insert(Debts deb){
+    public long insert(Debts deb){
         ContentValues contentValues=new ContentValues();
         contentValues.put("cod_cat", deb.getCategory().getId());
         contentValues.put("valor", deb.getValor());
@@ -29,8 +29,9 @@ public class DebtsDAO {
         contentValues.put("data_vencimento", String.valueOf(deb.getExpire_date()));
         contentValues.put("data_pagamento", String.valueOf(deb.getPayment_date()));
 
-        mConnection.insertOrThrow("dividas", null, contentValues);
+        long id = mConnection.insertOrThrow("dividas", null, contentValues);
         Log.d("DebtsDAO", "Inserção realizada com sucesso!");
+        return id;
     }
 
 
