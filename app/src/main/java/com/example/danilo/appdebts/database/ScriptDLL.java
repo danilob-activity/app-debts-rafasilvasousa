@@ -37,4 +37,10 @@ public class ScriptDLL {
     public static String getCategory(){
         return "SELECT * from categoria where id=?;";
     }
+
+    public static String getDebies(){return "SELECT * from dividas;";}
+
+    public static String getDebt(){
+        return "SELECT * from dividas where id=?;";
+    }
 }
