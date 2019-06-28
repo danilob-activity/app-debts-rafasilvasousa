@@ -21,11 +21,12 @@ public class CategoryDAO {
         mConnection = connection;
     }
 
-    public void insert(Category cat){
+    public long insert(Category cat){
         ContentValues contentValues = new ContentValues();
         contentValues.put("tipo", cat.getType());
-        mConnection.insertOrThrow("categoria", null, contentValues);
+        long id = mConnection.insertOrThrow("categoria", null, contentValues);
         Log.d("CategoryDAO", "Inserção Realizada com Sucesso!");
+        return id;
     }
 
     public void remove(long id){

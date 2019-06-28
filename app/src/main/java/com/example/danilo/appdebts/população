@@ -1,0 +1,36 @@
+CATEGORIAS
+    Casa
+    Comida
+    Transporte
+
+DIVIDAS
+    Descrição: Energia Eletrica
+    Categoria: Casa
+    Valor: 150,00
+    Vencimento: 15/06/2019
+    Pagamento:
+
+    Descrição:Quentinha da Val
+    Categoria: Comida
+    Valor: 130,00
+    Vencimento: 30/06/2019
+    Pagamento: 30/06/2019
+
+    Descrição:Seu Gioberto
+    Categoria: Transporte
+    Valor: 150,00
+    Vencimento: 30/06/2019
+    Pagamento: 30/06/2019
+
+    Descrição: Conta de Agua
+    Categoria: Casa
+    Valor: 40,00
+    Vencimento:15/06/2019
+    Pagamento:
+
+    Descrição: Cartao de Credito
+    Categoria: Casa
+    Valor: 900,00
+    Vencimento:15/06/2019
+    Pagamento:
+

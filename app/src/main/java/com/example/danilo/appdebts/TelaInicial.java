@@ -30,7 +30,7 @@ public class TelaInicial extends AppCompatActivity {
         createConnection();
         CategoryDAO catDAO = new CategoryDAO(mConnection);
         DebtsDAO debtDAO = new DebtsDAO(mConnection);
-
+//-------------------POPULANDO O BANCO------------------
         Category cat1 = new Category();
         cat1.setType("Casa");
         Category cat2= new Category();
@@ -38,41 +38,41 @@ public class TelaInicial extends AppCompatActivity {
         Category cat3 = new Category();
         cat3.setType("Trasporte");
 
-        catDAO.insert(cat1);
-        catDAO.insert(cat2);
-        catDAO.insert(cat3);
+        long catid1 = catDAO.insert(cat1);
+        long catid2 = catDAO.insert(cat2);
+        long catid3 = catDAO.insert(cat3);
 
         Debts deb1 = new Debts();
         deb1.setDescription("Conta de Luz");
-        deb1.setCategory(catDAO.getCategory(1));
+        deb1.setCategory(catDAO.getCategory(catid1));
         deb1.setValor(115.00);
         deb1.setExpire_date("15/06/2019");
         deb1.setPayment_date("");
 
         Debts deb2 = new Debts();
         deb2.setDescription("Quentinha da Val");
-        deb2.setCategory(catDAO.getCategory(2));
+        deb2.setCategory(catDAO.getCategory(catid2));
         deb2.setValor(130.00);
         deb2.setExpire_date("30/06/2019");
         deb2.setPayment_date("30/06/2019");
 
         Debts deb3 = new Debts();
         deb3.setDescription("Seu Gilberto");
-        deb3.setCategory(catDAO.getCategory(3));
+        deb3.setCategory(catDAO.getCategory(catid3));
         deb3.setValor(150.00);
         deb3.setExpire_date("30/06/2019");
         deb3.setPayment_date("30/06/2019");
 
         Debts deb4 = new Debts();
         deb4.setDescription("Conta de Agua");
-        deb4.setCategory(catDAO.getCategory(1));
+        deb4.setCategory(catDAO.getCategory(catid1));
         deb4.setValor(40.00);
         deb4.setExpire_date("15/06/2019");
         deb4.setPayment_date("");
 
         Debts deb5 = new Debts();
         deb5.setDescription("Cartao de Credito");
-        deb5.setCategory(catDAO.getCategory(1));
+        deb5.setCategory(catDAO.getCategory(catid1));
         deb5.setValor(9000.00);
         deb5.setExpire_date("15/06/2019");
         deb5.setPayment_date("");
