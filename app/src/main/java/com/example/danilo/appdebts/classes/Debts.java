@@ -11,8 +11,8 @@ public class Debts {
     private Category mCategory;
     private Double mValor;
     private String mDescription;
-    private Date mExpireDate;
-    private Date mPaymentDate;
+    private String mExpireDate;
+    private String mPaymentDate;
 
     public long getId() {
         return mId;
@@ -46,19 +46,19 @@ public class Debts {
         mDescription = description;
     }
 
-    public Date getExpire_date() {
+    public String getExpire_date() {
         return mExpireDate;
     }
 
-    public void setExpire_date(Date expire_date) {
+    public void setExpire_date(String expire_date) {
         this.mExpireDate = expire_date;
     }
 
-    public Date getPayment_date() {
+    public String getPayment_date() {
         return mPaymentDate;
     }
 
-    public void setPayment_date(Date payment_date) {
+    public void setPayment_date(String payment_date) {
         this.mPaymentDate = payment_date;
     }
 }
