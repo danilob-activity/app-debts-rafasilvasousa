@@ -46,7 +46,7 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
         public TextView mDescription;
         public ViewHolderDebts(View itemView) {
             super(itemView);
-            mDescription = (TextView) itemView.findViewById(R.id.textViewDescription);
+            mDescription = (TextView) itemView.findViewById(R.id.textViewCategory);
         }
     }
 
