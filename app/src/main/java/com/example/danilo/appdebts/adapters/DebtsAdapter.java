@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.danilo.appdebts.R;
@@ -26,6 +27,13 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
     public DebtsAdapter(List<Debts> data) {
         mData = data;
     }
+
+    private int mDescription;
+    private int mButtonVenc;
+    private int mButtonRefresh;
+    private int mButtonDelete;
+
+
     @NonNull
     @Override
     public DebtsAdapter.ViewHolderDebts
@@ -52,18 +60,21 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
     }
     public class ViewHolderDebts extends RecyclerView.ViewHolder {
         public TextView mDescription;
-        public TextView mCategory;
-        public TextView mPaymentDay;
-        public TextView mPayday;
+        public ImageButton mButtonVenc;
+        public ImageButton mButtonRefresh;
+        public ImageButton mButtonDelete;
+        public TextView mPayment;
+        public TextView mPay;
 
 
         public ViewHolderDebts(View itemView) {
             super(itemView);
             mDescription = (TextView) itemView.findViewById(R.id.textViewCategory);
-
-
-
-
+            mButtonVenc = itemView.findViewById(R.id.imageButtonPayment);
+            mButtonRefresh = itemView.findViewById(R.id.imageButtonRefresh);
+            mButtonDelete = itemView.findViewById(R.id.imageButtonDelete);
+            mPayment = itemView.findViewById((R.id.textViewPaymentDay));
+            mPay = itemView.findViewById((R.id.textViewPayDay));
 
         }
     }

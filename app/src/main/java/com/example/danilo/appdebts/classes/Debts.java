@@ -61,4 +61,17 @@ public class Debts {
     public void setPayment_date(String payment_date) {
         this.mPaymentDate = payment_date;
     }
+
+    public Debts(long id, Category category, Double valor, String description, String expireDate, String paymentDate) {
+        mId = id;
+        mCategory = category;
+        mValor = valor;
+        mDescription = description;
+        mExpireDate = expireDate;
+        mPaymentDate = paymentDate;
+    }
+
+    public Debts(){
+
+    }
 }

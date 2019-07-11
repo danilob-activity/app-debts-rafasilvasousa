@@ -23,4 +23,14 @@ public class Category {
     public void setType(String type) {
         this.mType = type;
     }
+
+    public Category(){
+
+    }
+
+    public Category(String tipo){
+        mType = tipo;
+    }
+
+
 }

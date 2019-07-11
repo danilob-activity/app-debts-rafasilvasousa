@@ -2,4 +2,9 @@
     <string name="app_name">AppDebts</string>
     <string name="sucess_connection">Conexão realizada com sucesso.</string>
     <string name="title_activity_main_window">MainWindow</string>
+    <string name="okMenu">OK</string>
+    <string name="cancelMenu">Cancel</string>
+    <string name="titleInsert">NewDebts</string>
+    <string name="PaymentDate">Vencimento</string>
+    <string name="Pay">Data Pgto</string>
 </resources>
