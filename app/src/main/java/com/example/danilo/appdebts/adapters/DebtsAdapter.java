@@ -1,7 +1,9 @@
 package com.example.danilo.appdebts.adapters;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,8 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
         mData = data;
     }
 
+    private Context mContext;
+
     private int mDescription;
     private int mButtonVenc;
     private int mButtonRefresh;
@@ -38,7 +42,8 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
     @Override
     public DebtsAdapter.ViewHolderDebts
         onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        mContext = parent.getContext();
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater.inflate(R.layout.list_view_debts, parent, false);
         ViewHolderDebts holderDebts = new ViewHolderDebts(view);
 
@@ -52,29 +57,84 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
         if (mData != null && mData.size() > 0) {
             Debts debt = mData.get(position);
             holder.mDescription.setText(debt.getDescription());
+            holder.mCategory.setText(debt.getCategory().getType());
+            holder.mDataPay.setText(debt.getExpire_date());
+            holder.mDataPayment.setText(debt.getPayment_date());
+            if(debt.getExpire_date().isEmpty()){
+                holder.mTextPay.setVisibility(View.GONE);
+            }else{
+                holder.mTextPay.setVisibility(View.VISIBLE);
+            }
         }
     }
+
+    public void updateViewHolderLast(){
+        ViewHolderDebts holder = mDataViews.get(mSelectedItem);
+        holder.mButtonUpdate.setVisibility(View.GONE);
+        holder.mButtonPay.setVisibility(View.GONE);
+        holder.mButtonDelete.setVisibility(View.GONE);
+        holder.mLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.white));
+    }
+
     @Override
     public int getItemCount() {
         return mData.size();
     }
+
     public class ViewHolderDebts extends RecyclerView.ViewHolder {
         public TextView mDescription;
-        public ImageButton mButtonVenc;
-        public ImageButton mButtonRefresh;
+        public TextView mCategory;
+        public TextView mDataPay;
+        public TextView mDataPayment;
+        public TextView mTextPayment;
+        public TextView mTextPay;
+        public ImageButton mButtonUpdate;
+        public ImageButton mButtonPay;
         public ImageButton mButtonDelete;
-        public TextView mPayment;
-        public TextView mPay;
+        public ConstraintLayout mLayout;
+
 
 
         public ViewHolderDebts(View itemView) {
             super(itemView);
-            mDescription = (TextView) itemView.findViewById(R.id.textViewCategory);
-            mButtonVenc = itemView.findViewById(R.id.imageButtonPayment);
-            mButtonRefresh = itemView.findViewById(R.id.imageButtonRefresh);
-            mButtonDelete = itemView.findViewById(R.id.imageButtonDelete);
-            mPayment = itemView.findViewById((R.id.textViewPaymentDay));
-            mPay = itemView.findViewById((R.id.textViewPayDay));
+                mDescription = itemView.findViewById(R.id.textViewDescription);
+                mCategory = itemView.findViewById(R.id.textViewCategory);
+                mDataPay = itemView.findViewById(R.id.textViewPaymentDay);
+                mDataPayment =  itemView.findViewById(R.id.textViewPayDay);
+                mButtonPay = itemView.findViewById(R.id.imageButtonPayment);
+                mButtonUpdate = itemView.findViewById(R.id.imageButtonRefresh);
+                mButtonDelete = itemView.findViewById(R.id.imageButtonDelete);
+                mTextPay = itemView.findViewById(R.id.textView2);
+                mTextPayment = itemView.findViewById(R.id.textView4);
+                mLayout = itemView.findViewById(R.id.linearLayout);
+
+                mButtonPay.setVisibility(View.GONE);
+                mButtonUpdate.setVisibility(View.GONE);
+                mButtonDelete.setVisibility(View.GONE);
+
+                mDescription.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mActualItem=getLayoutPosition();
+                        if(mSelectedItem!=-1  && mActualItem!=mSelectedItem){
+                            updateViewHolderLast();
+                        }
+                        if(mButtonDelete.getVisibility()==View.GONE){
+                            mButtonPay.setVisibility(View.VISIBLE);
+                            mButtonUpdate.setVisibility(View.VISIBLE);
+                            mButtonDelete.setVisibility(View.VISIBLE);
+                            mLayout.setBackgroundColor(mContext.getResources().getColor(R.color.selectedItem));
+
+                        }else{
+                            mButtonPay.setVisibility(View.GONE);
+                            mButtonUpdate.setVisibility(View.GONE);
+                            mButtonDelete.setVisibility(View.GONE);
+                            mLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.white));
+
+                        }
+                        mSelectedItem = mActualItem;
+                    }
+                });
 
         }
     }

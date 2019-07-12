@@ -18,8 +18,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".database.InsertDebts"
-            android:theme="@style/AppTheme2"></activity>
+            android:name=".TelaInicial"
+            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".InsertDebts" android:theme="@style/AppTheme2"></activity>
     </application>
 
 </manifest>
