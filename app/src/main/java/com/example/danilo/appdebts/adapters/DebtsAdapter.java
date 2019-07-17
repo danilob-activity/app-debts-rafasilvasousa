@@ -2,8 +2,11 @@ package com.example.danilo.appdebts.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.danilo.appdebts.DAO.DebtsDAO;
+import com.example.danilo.appdebts.InsertDebts;
 import com.example.danilo.appdebts.R;
 import com.example.danilo.appdebts.classes.Debts;
+import com.example.danilo.appdebts.database.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +35,13 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
     public DebtsAdapter(List<Debts> data) {
         mData = data;
     }
-
+    private DebtsAdapter mDebtsAdapter = this;
     private Context mContext;
 
-    private int mDescription;
-    private int mButtonVenc;
-    private int mButtonRefresh;
-    private int mButtonDelete;
+//    private int mDescription;
+//    private int mButtonVenc;
+//    private int mButtonRefresh;
+//    private int mButtonDelete;
 
 
     @NonNull
@@ -111,6 +117,33 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
                 mButtonPay.setVisibility(View.GONE);
                 mButtonUpdate.setVisibility(View.GONE);
                 mButtonDelete.setVisibility(View.GONE);
+
+                mButtonDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mData.size()>0) {
+                            Debts debt = mData.get(getLayoutPosition());
+                            DatabaseHelper mDataHelper = new DatabaseHelper(mContext);
+                            SQLiteDatabase mConnection = mDataHelper.getWritableDatabase();
+                            DebtsDAO debtsDAO = new DebtsDAO(mConnection);
+                            debtsDAO.remove(debt.getId());
+                            mData.remove(getLayoutPosition());
+                            mDebtsAdapter.notifyItemRemoved(getLayoutPosition());
+                        }
+                    }
+                });
+
+                mButtonUpdate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mData.size()>0) {
+                            Debts debts = mData.get(getLayoutPosition());
+                            Intent intent = new Intent(mContext, InsertDebts.class);
+                            intent.putExtra("DEBT",debts);
+                            ((AppCompatActivity) mContext).startActivityForResult(intent, 1001);
+                        }
+                    }
+                });
 
                 mDescription.setOnClickListener(new View.OnClickListener() {
                     @Override

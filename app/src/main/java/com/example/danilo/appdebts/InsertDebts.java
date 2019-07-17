@@ -22,6 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.example.danilo.appdebts.adapters.DebtsAdapter;
 import com.example.danilo.appdebts.classes.Category;
@@ -45,10 +47,22 @@ public class InsertDebts extends AppCompatActivity{
     Spinner mSpinnerCategory;
     final Calendar mCalendar = Calendar.getInstance();
 
+    TextView mTextViewPayment;
+    TextView mTextViewPay;
+    EditText mEditTextPay;
+    Debts mDebt=null;
+    EditText mEditTextDescription;
+    EditText mEditTextValue;
+
+    boolean mFlag=true;
+    Switch mSwitchPay;
+
     CategoryDAO mCategoryDAO;
     DebtsDAO mDebtsDAO;
     private SQLiteDatabase mConection;
     private DatabaseHelper mDatabaseHelper;
+
+    ArrayAdapter<String> adp1;
 
 
     @Override
@@ -114,8 +128,51 @@ public class InsertDebts extends AppCompatActivity{
 
         createConnection();
         updateSpinnerCategory();
+        mTextViewPayment = findViewById(R.id. textViewPaymentorPay);
+        mTextViewPay = findViewById(R.id. textViewPay);
+        mEditTextPay = findViewById(R.id. editTextPay);
+        checkParameters();
+        updateUI();
+        mEditTextPay.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(InsertDebts. this, date, mCalendar
+                        .get(Calendar. YEAR), mCalendar.get(Calendar. MONTH),
+                        mCalendar.get(Calendar. DAY_OF_MONTH)).show();
+            }
+        });
+
+        mEditTextDescription = findViewById(R.id.editTextDescription);
+        mEditTextValue = findViewById(R.id.editTextValue);
+        mSwitchPay=findViewById(R.id.switchPay);
 
 
+
+    }
+    private void updateUI(){
+        if(mFlag){ //inserção
+            mTextViewPay.setVisibility(View.GONE);
+            mEditTextPay.setVisibility(View.GONE);
+        }else{
+            mTextViewPay.setVisibility(View.VISIBLE);
+            mEditTextPay.setVisibility(View.VISIBLE);
+            mSwitchPay.setVisibility(View.GONE);
+            getSupportActionBar().setTitle("Change Debt");
+            mTextViewPayment.setText("Payment");
+        }
+    }
+    private void checkParameters(){
+        Bundle bundle = getIntent().getExtras();
+        if((bundle!=null) && bundle.containsKey( "DEBT")){
+            mDebt = (Debts) bundle.getSerializable( "DEBT");
+            mEditTextDescription.setText(mDebt.getDescription());
+            mEditTextDataPay.setText(mDebt.getExpire_date());
+            mEditTextPay.setText(mDebt.getPayment_date());
+            mEditTextValue.setText(String. valueOf(mDebt.getValor()));
+            mSpinnerCategory.setSelection( adp1.getPosition( mDebt.getCategory().getType()));
+            mFlag = false;
+        }
     }
 
     public void updateSpinnerCategory(){
@@ -129,7 +186,7 @@ public class InsertDebts extends AppCompatActivity{
             list.add(cat.getType());
         }
 
-        ArrayAdapter<String> adp1 = new ArrayAdapter<String>(this,
+        adp1 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, list);
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerCategory.setAdapter(adp1);
@@ -160,6 +217,60 @@ public class InsertDebts extends AppCompatActivity{
         inflater.inflate(R.menu.menu_add_debts,menu);
         return super.onCreateOptionsMenu(menu);
     }
+    private Debts checkData(){
+        Debts debt = null;
+        String msg = "";
+        if(mEditTextDescription.getText().toString().isEmpty())
+            msg = "*Informe a descrição do débito.\n";
+
+        if(mEditTextValue.getText().toString().isEmpty())
+            msg += "*Informe o valor do débito.\n";
+        else if(Float.parseFloat(mEditTextValue.getText().toString())<=0)
+            msg += "*Informe um valor válido (>0) para o débito.\n";
+
+        if(mEditTextDataPay.getText().toString().isEmpty())
+            msg += "*Informe a data do débito.\n";
+
+        if(!msg.isEmpty())
+            createAlertDialog(msg);
+        else{
+            //criar uma instância do débito
+            debt = new Debts();
+            debt.setCategory(mCategoryDAO.getCategory((Long) mSpinnerCategory.getSelectedItem()));
+            debt.setExpire_date(mEditTextDataPay.getText().toString());
+            debt.setDescription(mEditTextDescription.getText().toString());
+            debt.setValor((double) Float.parseFloat(mEditTextValue.getText().toString()));
+            if(mSwitchPay.isChecked()){
+                debt.setExpire_date(debt.getExpire_date());
+            }else{
+                debt.setExpire_date("");
+            }
+        }
+        if(!mFlag){
+            debt.setId(mDebt.getId());
+            debt.setExpire_date(mEditTextPay.getText().toString());
+        }else{
+            if(mSwitchPay.isChecked()){
+                debt.setExpire_date(mEditTextDataPay.getText().toString());
+            }else{
+                debt.setExpire_date("");
+            }
+        }
+        return debt;
+    }
+
+    private void createAlertDialog(String msg) {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle("Erro");
+        //define a mensagem
+        builder.setMessage(msg);
+        builder.setCancelable(true);
+        builder.create();
+        //Exibe
+        builder.show();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -175,5 +286,6 @@ public class InsertDebts extends AppCompatActivity{
         }
         return true;
     }
+
 
 }

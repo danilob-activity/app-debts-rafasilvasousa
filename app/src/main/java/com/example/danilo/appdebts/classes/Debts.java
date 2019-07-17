@@ -1,12 +1,13 @@
 package com.example.danilo.appdebts.classes;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Rafael Sousa on 27/06/19.
  */
 
-public class Debts {
+public class Debts implements Serializable{
     private long mId;
     private Category mCategory;
     private Double mValor;

@@ -12,11 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Category"
+        android:text="@string/category"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinnerCategories"
@@ -35,11 +34,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Description"
+        android:text="@string/description"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCategoria"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewCategoria" />
 
     <EditText
         android:id="@+id/editTextDescription"
@@ -62,26 +60,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Payment/Pay"
+        android:text="@string/textPayorPayment"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
 
     <Switch
         android:id="@+id/switchPay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
 
+        android:layout_marginTop="8dp"
         android:showText="true"
         android:splitTrack="false"
-        android:textOff="Pendente"
-        android:textOn="Pago"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPaymentorPay"
-        android:layout_marginLeft="16dp" />
+        android:textOff="@string/optionNoPay"
+        android:textOn="@string/optionPay"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValue"
+        tools:layout_editor_absoluteX="8dp" />
 
     <EditText
         android:id="@+id/editTextDate"
@@ -89,14 +84,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
         android:clickable="true"
         android:editable="false"
+        android:ems="10"
         android:focusable="false"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewPaymentorPay"
         app:layout_constraintStart_toEndOf="@+id/textViewPaymentorPay"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
 
 
     <android.support.design.widget.FloatingActionButton
@@ -114,4 +109,50 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_add_white_18"
         android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/textViewPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Pay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPaymentorPay" />
+
+    <EditText
+        android:id="@+id/editTextPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPay"
+        app:layout_constraintStart_toEndOf="@+id/textViewPay"
+        app:layout_constraintTop_toTopOf="@+id/textViewPay" />
+
+    <TextView
+        android:id="@+id/textViewValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Value"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPay" />
+
+    <EditText
+        android:id="@+id/editTextValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewValue"
+        app:layout_constraintStart_toEndOf="@+id/textViewValue"
+        app:layout_constraintTop_toTopOf="@+id/textViewValue" />
 </android.support.constraint.ConstraintLayout>
