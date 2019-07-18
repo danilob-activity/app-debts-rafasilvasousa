@@ -43,4 +43,8 @@ public class ScriptDLL {
     public static String getDebt(){
         return "SELECT * from dividas where id=?;";
     }
+
+    public static String getDebtsByCategory(){
+        return "select * from dividas order by cod_cat asc";
+    }
 }

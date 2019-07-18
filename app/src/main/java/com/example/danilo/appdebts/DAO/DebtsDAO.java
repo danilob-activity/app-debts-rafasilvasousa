@@ -99,4 +99,29 @@ public class DebtsDAO {
         }
         return null;
     }
+    public List<Debts> listDebtsByCategory(){
+        List<Debts> debies = new ArrayList<Debts>();
+        Cursor result = mConnection.rawQuery(ScriptDLL.getDebtsByCategory(), null);
+
+        if (result.getCount()>0){
+            result.moveToFirst();
+            do{
+                Debts deb = new Debts();
+                deb.setId(result.getLong(result.getColumnIndexOrThrow("id")));
+                deb.setCategory(new CategoryDAO(mConnection).getCategory(result.getLong(result.getColumnIndexOrThrow("cod_cat"))));
+                deb.setDescription(result.getString(result.getColumnIndexOrThrow("descricao")));
+                deb.setValor(result.getDouble(result.getColumnIndexOrThrow("valor")));
+                deb.setExpire_date(result.getString(result.getColumnIndexOrThrow("data_vencimento")));
+                deb.setPayment_date(result.getString(result.getColumnIndexOrThrow("data_pagamento")));
+                debies.add(deb);
+                Log.d("DebtsDAO","Listando: "+deb.getId()+" - "+deb.getDescription());
+                //cat.setType(result.getString(result.getColumnIndexOrThrow("tipo")));
+                //categories.add(cat);
+                //Log.d("CategoryDAO", "Listando: "+cat.getId()+" - "+cat.getType());
+            }while(result.moveToNext());
+            result.close();
+        }
+        return debies;
+    }
+
 }

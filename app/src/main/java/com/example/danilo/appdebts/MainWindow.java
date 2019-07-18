@@ -12,6 +12,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.danilo.appdebts.DAO.DebtsDAO;
 import com.example.danilo.appdebts.adapters.DebtsAdapter;
@@ -26,6 +29,15 @@ public class MainWindow extends AppCompatActivity {
     private DatabaseHelper mDataHelper;
     private ConstraintLayout mLayout;
 
+    final String[] mOptionsFilter = {
+            "Todas as Dívidas",
+            "Dívidas em Aberto",
+            "Dividas Pagas",
+            "Dívidas por Categoria",
+            "Dívidas em Atraso"
+    };
+
+    private Spinner mSpinnerFilter;
 
 
     @Override
@@ -52,7 +64,38 @@ public class MainWindow extends AppCompatActivity {
         mDebtsAdapter = new DebtsAdapter(mDebtsDAO.listDebts());
         mListDebts.setAdapter(mDebtsAdapter);
         mListDebts.setHasFixedSize(true);
+
+        mSpinnerFilter = findViewById(R.id. spinnerFilter);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                mOptionsFilter
+        );
+        mSpinnerFilter.setAdapter(adapter);
+
+        mSpinnerFilter.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                switch (position) {
+                    case 0:{
+                        mDebtsAdapter = new DebtsAdapter((mDebtsDAO.listDebts()));
+                        mListDebts.setAdapter(mDebtsAdapter);
+                    }
+                    case 3:{
+                        mDebtsAdapter = new DebtsAdapter(mDebtsDAO.listDebtsByCategory());
+                        mListDebts.setAdapter(mDebtsAdapter);
+                    }
+
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) { // your code here
+            }
+        });
     }
+
+
     private void createConnection(){
         try{
             mDataHelper = new DatabaseHelper(this);
