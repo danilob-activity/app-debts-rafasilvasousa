@@ -280,7 +280,13 @@ public class InsertDebts extends AppCompatActivity{
                 finishAffinity();
                 break;
             case R.id.okMenu:
-                Log.d("Item Menu", "Menu"+R.string.okMenu);
+                Debts debt = checkData();
+                if (debt!=null){
+                    mDebtsDAO.insert(debt);
+                    startActivity(new Intent(this, MainWindow.class));
+                    finishAffinity();
+                }
+//                Log.d("Item Menu", "Menu"+R.string.okMenu);
                 break;
             default:break;
         }
