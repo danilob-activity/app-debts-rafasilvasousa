@@ -45,6 +45,6 @@ public class ScriptDLL {
     }
 
     public static String getDebtsByCategory(){
-        return "select * from dividas order by cod_cat asc";
+        return "select dividas.* from dividas, categoria where dividas.cod_cat=categoria.id order by categoria.tipo asc";
     }
 }
