@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.danilo.appdebts.DAO.DebtsDAO;
 import com.example.danilo.appdebts.adapters.DebtsAdapter;
@@ -28,6 +29,11 @@ public class MainWindow extends AppCompatActivity {
     private SQLiteDatabase mConnection;
     private DatabaseHelper mDataHelper;
     private ConstraintLayout mLayout;
+
+    private TextView mTextViewValor;
+    private TextView mTextViewValorPendente;
+
+    private MainWindow mThisContext = this;
 
     final String[] mOptionsFilter = {
             "Todas as Dívidas",
@@ -61,9 +67,12 @@ public class MainWindow extends AppCompatActivity {
         createConnection();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager( this);
         mListDebts.setLayoutManager(linearLayoutManager);
-        mDebtsAdapter = new DebtsAdapter(mDebtsDAO.listDebts());
+        mDebtsAdapter = new DebtsAdapter(mDebtsDAO.listDebts(), mThisContext, 0);
         mListDebts.setAdapter(mDebtsAdapter);
         mListDebts.setHasFixedSize(true);
+
+        mTextViewValor = findViewById(R.id.textViewValor);
+        mTextViewValorPendente = findViewById(R.id.textViewValorPendente);
 
         mSpinnerFilter = findViewById(R.id. spinnerFilter);
 
@@ -79,11 +88,17 @@ public class MainWindow extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 switch (position) {
                     case 0:{
-                        mDebtsAdapter = new DebtsAdapter((mDebtsDAO.listDebts()));
+                        mDebtsAdapter = new DebtsAdapter(mDebtsDAO.listDebts(), mThisContext, position);
                         mListDebts.setAdapter(mDebtsAdapter);
                     }
+                    case 1:{
+
+                    }
+                    case 2:{
+
+                    }
                     case 3:{
-                        mDebtsAdapter = new DebtsAdapter(mDebtsDAO.listDebtsByCategory());
+                        mDebtsAdapter = new DebtsAdapter(mDebtsDAO.listDebtsByCategory(), mThisContext, position);
                         mListDebts.setAdapter(mDebtsAdapter);
                     }
 
@@ -105,6 +120,10 @@ public class MainWindow extends AppCompatActivity {
         }catch (SQLException e){
             Snackbar.make(mLayout, e.toString(), Snackbar.LENGTH_LONG).show();
         }
+    }
+    public void updateUI(double val_to_pay, double val_payed){
+        mTextViewValor.setText(String.valueOf(val_payed));
+        mTextViewValorPendente.setText(String.valueOf(val_to_pay));
     }
 
 }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.danilo.appdebts.DAO.DebtsDAO;
 import com.example.danilo.appdebts.InsertDebts;
+import com.example.danilo.appdebts.MainWindow;
 import com.example.danilo.appdebts.R;
 import com.example.danilo.appdebts.classes.Debts;
 import com.example.danilo.appdebts.database.DatabaseHelper;
@@ -38,20 +39,34 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
     private int mSelectedItem = -1; //indice do ult viewholder selecionado.
     private int mActualItem = -1; //indice do atual viewholder selecionado.
 
-    public DebtsAdapter(List<Debts> data) {
-        mData = data;
-    }
+    final int PAY = 1;
+    final int ALTER = -1;
+    final int DELETE = 0;
 
     private DebtsAdapter mDebtsAdapter = this;
     private Context mContext;
 
+    private int mFilterType = 0;
+    private double mValorPago;
+    private double mValorAPagar;
+    private MainWindow mMainWindow;
+
+    public DebtsAdapter(List<Debts> data, MainWindow context, int filter) {
+        mData = data;
+        for (int i=0; i<mData.size();i++) {
+            if(mData.get(i).getPayment_date().isEmpty()){
+                mValorAPagar+=mData.get(i).getValor();
+            }else{
+                mValorPago+=mData.get(i).getValor();
+            }
+        }
+        mMainWindow = context;
+        mMainWindow.updateUI(mValorAPagar, mValorPago);
+        mFilterType=filter;
+
+    }
+
     final Calendar mCalendar = Calendar.getInstance();
-
-//    private int mDescription;
-//    private int mButtonVenc;
-//    private int mButtonRefresh;
-//    private int mButtonDelete;
-
 
     @NonNull
     @Override
@@ -90,6 +105,38 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
         holder.mButtonDelete.setVisibility(View.GONE);
         holder.mLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.white));
     }
+
+    public void makeDecision(int operation, int position){
+        switch (operation){
+            case PAY:{
+                Debts debt = mData.get(position);
+                mValorPago += debt.getValor();
+                mValorAPagar -= debt.getValor();
+                if (mFilterType==0 || mFilterType==4) {
+                    mData.remove(position);
+                    mDebtsAdapter.notifyItemRemoved(position);
+                    mValorPago -= debt.getValor();
+                }
+
+                break;
+            }
+            case ALTER:{
+                break;
+            }
+            case DELETE:{
+                Debts debts = mData.get(position);
+                if(debts.getPayment_date().isEmpty()){
+                    mValorAPagar -= debts.getValor();
+                }else{
+                    mValorPago -= debts.getValor();
+                }
+                break;
+            }
+            default:break;
+        }
+
+    }
+
 
     @Override
     public int getItemCount() {
@@ -146,6 +193,7 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
                                 DebtsDAO debtsDAO = new DebtsDAO(mConnection);
                                 debtsDAO.alter(debt);
                                 mDebtsAdapter.notifyItemChanged(getLayoutPosition());
+                                makeDecision(PAY, getLayoutPosition());
                             }
                         }
                     };
@@ -165,8 +213,10 @@ public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDe
                         SQLiteDatabase mConnection = mDataHelper.getWritableDatabase();
                         DebtsDAO debtsDAO = new DebtsDAO(mConnection);
                         debtsDAO.remove(debt.getId());
+                        makeDecision(DELETE, getLayoutPosition());
                         mData.remove(getLayoutPosition());
                         mDebtsAdapter.notifyItemRemoved(getLayoutPosition());
+
                     }
                 }
             });
